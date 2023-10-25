@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header class="pb-5"></header>
+    <div class="container">
+        <!-- <input type="number" value="1" min="1" max="7"> -->
+        <div class="py-3 d-flex justify-content-center">
+            <button id="indicator1" class="btn btn-dark mx-1" ><i class="bi bi-arrow-left"></i></button>
+            <button value="1" id="btn" class="btn btn-dark mx-1">1</button>
+            <button value="2" id="btn" class="btn btn-dark mx-1">2</button>
+            <button id="indicator2" class="btn btn-dark mx-1"><i class="bi bi-arrow-right"></i></button>
+        </div>
+        <p id="searched" class="ps-5"></p>
+        <main class="mb-5"></main>
+    </div>
+    <footer></footer>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="./assets/js/dynamicListener.js"></script>
+    <script type="module">
+        import {nbaAllTime, nbaPlayers} from './components/Players.js'
+        import {initHeader} from './components/Header.js'
+        import {initFooter} from './components/Footer.js'
+        
+        const main = document.querySelector('main')
+        const header = document.querySelector('header')
+        const footer = document.querySelector('footer')
+        const btn = document.querySelectorAll('#btn')
+        const arrow1 = document.querySelector('#indicator1')
+        const arrow2 = document.querySelector('#indicator2')
+        
+        for(let n of btn){
+            n.addEventListener('click', e=>{
+                nbaAllTime({page: e.target.value}).then(data => main.innerHTML = nbaPlayers(data.results))
+                console.log(e.target.value)
+            })
+        }
+
+        arrow1.addEventListener('click', e=>{
+            nbaAllTime({page: e.target.value1}).then(data => main.innerHTML = nbaPlayers(data.results))
+        })
+
+        arrow2.addEventListener('click', e=>{
+            nbaAllTime({page: e.target.value=2}).then(data => main.innerHTML = nbaPlayers(data.results))
+        })
+
+        setTimeout(()=>{
+            const current_page = window.location.href.split('/')[3]    
+            
+            if(current_page == 'all-time.html'){
+                const search = document.querySelector('header form')
+                search.setAttribute('class', 'd-flex')
+                addDynamicEventListener(document.body, 'submit', 'header form', function (e) {
+                    e.preventDefault()
+                    console.log(e.target.elements[0].value)
+                    nbaAllTime({search: e.target.elements[0].value}).then(data => {
+                        main.innerHTML = nbaPlayers(data.results)
+                        document.querySelector('#searched').innerHTML = `Search: <b><em>"${e.target.elements[0].value}"</em></b>`
+                        e.target.elements[0].value = ''
+                    })
+                });
+            }
+        }, 750)
+
+        initHeader(header)
+        initFooter(footer)
+        nbaAllTime({}).then(data => main.innerHTML = nbaPlayers(data.results))
+    </script>
+</body>
+</html>

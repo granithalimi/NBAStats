@@ -1,0 +1,56 @@
+body{
+    height: 100vh;
+}
+header #nav{
+    background-color: rgb(32, 32, 32) !important;
+}
+.nav-item a{
+    color: white !important;
+}
+
+a#links{
+    text-decoration: none;
+    color: black;
+}
+a#links:hover{
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 3px;
+    margin-left: 4px;
+}
+.image img{
+    width: 100%;
+    border-radius: 20px;
+}
+.news img{
+    width: 40%;
+    border-radius: 20px;
+}
+
+#player p{
+    font-size: 18px;
+}
+
+footer{
+    background-color: rgb(32, 32, 32) !important;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+footer img{
+    width: 50px;
+}
+footer p{
+    font-size: 15px;
+    color: white;
+}   
+footer a{
+    color: white;
+    font-size: 12px;
+    text-decoration: none;
+    margin: 0 5px;
+}
+footer #last{
+    font-size: 10px;
+}
